@@ -1,7 +1,6 @@
 import 'package:expense_planning_app/models/transaction.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import '../widget/user_transaction.dart';
 
 class TransactionList extends StatelessWidget {
   final List<Transaction> transactions;
@@ -9,58 +8,80 @@ class TransactionList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: transactions.map((tx) {
-        return Card(
-          child: Row(
-            children: <Widget>[
-              Container(
-                // ignore: prefer_const_constructors
-                margin: EdgeInsets.symmetric(
-                  vertical: 10,
-                  horizontal: 15,
+    return Container(
+      height: 300,
+      child: transactions.isEmpty
+          ? Column(
+              children: [
+                Text(
+                  'no Transaction added yet!',
+                  style: Theme.of(context).textTheme.titleMedium,
                 ),
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Colors.purple,
-                    width: 2,
-                  ),
+                SizedBox(
+                  height: 20,
                 ),
-                padding: EdgeInsets.all(10),
-                child: Text(
-                  tx.amount.toString(),
-                  // ignore: prefer_const_constructors
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                    color: Colors.purple,
+                Container(
+                  height: 200,
+                  child: Image.asset(
+                    'assets/images/waiting.png',
+                    fit: BoxFit.cover,
                   ),
                 ),
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    tx.title,
-                    // ignore: prefer_const_constructors
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
+              ],
+            )
+          : ListView(
+              children: transactions.map((tx) {
+                return Card(
+                  child: Row(
+                    children: <Widget>[
+                      Container(
+                        // ignore: prefer_const_constructors
+                        margin: EdgeInsets.symmetric(
+                          vertical: 10,
+                          horizontal: 15,
+                        ),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Colors.purple,
+                            width: 2,
+                          ),
+                        ),
+                        padding: EdgeInsets.all(10),
+                        child: Text(
+                          '\$${tx.amount.toStringAsFixed(2)}',
+                          // ignore: prefer_const_constructors
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                            color: Colors.purple,
+                          ),
+                        ),
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            tx.title,
+                            // ignore: prefer_const_constructors
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
+                          ),
+                          Text(
+                            DateFormat.yMMMEd().format(tx.date),
+                            // ignore: prefer_const_constructors
+                            style: TextStyle(
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
                   ),
-                  Text(
-                    DateFormat.yMMMEd().format(tx.date),
-                    // ignore: prefer_const_constructors
-                    style: TextStyle(
-                      color: Colors.grey,
-                    ),
-                  ),
-                ],
-              )
-            ],
-          ),
-        );
-      }).toList(),
+                );
+              }).toList(),
+            ),
     );
   }
 }
